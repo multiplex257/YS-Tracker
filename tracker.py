@@ -7,11 +7,12 @@ import time
 
 # Configuration
 # Replace with your actual Webhook URLs or credentials
-TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
-TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
-SLACK_WEBHOOK_URL = os.getenv("SLACK_WEBHOOK_URL")
+#TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+#TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
+#SLACK_WEBHOOK_URL = os.getenv("SLACK_WEBHOOK_URL")
 
 # BSE India API endpoint for corporate announcements of Unitech Ltd (Scrip Code: 507878)
+print("before bse")
 BSE_URL = "https://bseindia.com"
 PAYLOAD = {
     "cat": "Company Update",
