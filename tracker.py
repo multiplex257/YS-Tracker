@@ -11,7 +11,8 @@ print("before bse")
 STATE_FILE = "last_announcement.json"
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
-
+print(TELEGRAM_BOT_TOKEN)
+print(TELEGRAM_CHAT_ID)
 def send_alert(message):
     print(f"ALERT: {message}")
     
