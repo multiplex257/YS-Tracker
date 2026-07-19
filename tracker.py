@@ -72,7 +72,7 @@ def check_announcements():
             is_relevant = any(kw in text_to_check for kw in keywords)
             
             if is_relevant:
-                alert_msg = f"⚠️ UNITECH REGULATORY UPDATE ⚠️\n\nHeading: {head}\nDetails: {details}\nLink: https://bseindia.comstock-share-price/unitech-ltd/unitech/507878/corporate-announcements/"
+                alert_msg = f"⚠️ UNITECH REGULATORY UPDATE ⚠️\n\nHeading: {head}\nDetails: {details}\nLink: https://bseindia.comstock-share-price/unitech-ltd/unitech/507878/corporate-annou[...]"
                 send_alert(alert_msg)
             
             # Save new state
@@ -83,9 +83,6 @@ def check_announcements():
         print(f"Error checking BSE: {e}")
 
 if __name__ == "__main__":
-    # If running locally, check every 15 minutes (900 seconds)
     print("Starting Unitech regulatory tracker...")
-    while True:
-        check_announcements()
-        time.sleep(900)
-
+    check_announcements()
+    print("Check completed successfully!")
