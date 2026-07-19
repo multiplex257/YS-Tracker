@@ -1,5 +1,5 @@
 # YS-Tracker
-YS-Tracker is to track live event
+#YS-Tracker is to track live event
 import os
 import requests
 import json
