@@ -60,7 +60,7 @@ def check_announcements():
         
         print(f"✓ Response status: {response.status_code}")
         print(f"✓ Response length: {len(response.text)} bytes")
-        print(f"DEBUG: Response Content (first 500 chars):\n{response.text[:500]}")
+        print(f"DEBUG: Response Content (first 15000 chars):\n{response.text[:15000]}")
         
         if not response.text or len(response.text) < 100:
             print("⚠ Empty or minimal response from BSE")
