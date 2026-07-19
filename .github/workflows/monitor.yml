@@ -15,7 +15,7 @@ jobs:
       with:
         python-version: '3.11'
     - name: Install dependencies
-      run: pip install requests bse
+      run: pip install requests beautifulsoup4
     - name: Run Script
       env:
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
