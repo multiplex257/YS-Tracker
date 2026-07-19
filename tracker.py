@@ -43,6 +43,17 @@ def send_alert(message):
     else:
         print("⚠ Telegram credentials not set - alert not sent")
 
+def is_unitech_information(text):
+    """
+    Verify that the information is related to Unitech Ltd
+    """
+    unitech_keywords = ["UNITECH", "UNITECH LTD", "507878"]
+    text_upper = str(text).upper()
+    
+    is_unitech = any(keyword in text_upper for keyword in unitech_keywords)
+    print(f"DEBUG: Unitech verification - Text: '{text[:50]}...' - Is Unitech: {is_unitech}")
+    return is_unitech
+
 def check_announcements():
     try:
         print("Attempting to fetch BSE announcements...")
@@ -60,7 +71,7 @@ def check_announcements():
         
         print(f"✓ Response status: {response.status_code}")
         print(f"✓ Response length: {len(response.text)} bytes")
-        print(f"DEBUG: Response Content (first 15000 chars):\n{response.text[:15000]}")
+        print(f"DEBUG: Response Content (first 500 chars):\n{response.text[:500]}")
         
         if not response.text or len(response.text) < 100:
             print("⚠ Empty or minimal response from BSE")
@@ -94,15 +105,32 @@ def check_announcements():
         try:
             announcement_date = latest_row[0].get_text(strip=True) if len(latest_row) > 0 else "N/A"
             news_sub = latest_row[1].get_text(strip=True) if len(latest_row) > 1 else "N/A"
+            company_name = latest_row[2].get_text(strip=True) if len(latest_row) > 2 else "N/A"
             news_id = announcement_date + "_" + news_sub[:20]  # Create unique ID from date and subject
             
             print(f"✓ Latest announcement ID: {news_id}")
             print(f"✓ Announcement Date: {announcement_date}")
             print(f"✓ Announcement Subject: {news_sub}")
+            print(f"✓ Company Name: {company_name}")
             
         except Exception as e:
             print(f"✗ Error extracting announcement details: {e}")
             return
+        
+        # VERIFICATION: Confirm this is Unitech information
+        print("\n--- UNITECH VERIFICATION ---")
+        is_unitech_subject = is_unitech_information(news_sub)
+        is_unitech_company = is_unitech_information(company_name)
+        
+        if not (is_unitech_subject or is_unitech_company):
+            print(f"✗ VERIFICATION FAILED: This announcement is NOT for Unitech")
+            print(f"  Subject: {news_sub}")
+            print(f"  Company: {company_name}")
+            print("  Skipping this announcement - not related to Unitech")
+            return
+        
+        print(f"✓ VERIFICATION PASSED: This is Unitech information")
+        print("--- END VERIFICATION ---\n")
         
         # Load previous state
         if os.path.exists(STATE_FILE):
@@ -129,7 +157,7 @@ def check_announcements():
             print(f"DEBUG: Is relevant: {is_relevant} (keywords checked: {keywords})")
             
             if is_relevant:
-                alert_msg = f"⚠️ <b>UNITECH REGULATORY UPDATE</b> ⚠️\n\n<b>Date:</b> {announcement_date}\n<b>Subject:</b> {news_sub}\n<b>Link:</b> https://www.bseindia.com/corporates/ann_date.aspx?Scrip=507878"
+                alert_msg = f"⚠️ <b>UNITECH REGULATORY UPDATE</b> ⚠️\n\n<b>Date:</b> {announcement_date}\n<b>Company:</b> {company_name}\n<b>Subject:</b> {news_sub}\n<b>Link:</b> https://www.bseindia.com/corporates/ann_date.aspx?Scrip=507878"
                 send_alert(alert_msg)
             else:
                 print("ℹ Announcement not relevant - no alert sent")
